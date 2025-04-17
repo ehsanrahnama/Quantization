@@ -56,15 +56,20 @@ Scale factor (step size), calculated as:
 
 $\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}} = \frac{\text{Input Range}}{\text{Quantized Range}}$
 
-$\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}} = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
+
+
+$\Delta = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
 
 The zero-point is calculated as:
 
 $Z = \text{round}\left( \frac{0 - \text{min}_{\text{float}}}{\Delta} \right) - \text{min}_{\text{int}}$
 
-Where:\
-$\text{min}_{\text{float}}$: Minimum value in the original floating-point range.\
+Where:
+
+$\text{min}_{\text{float}}$: Minimum value in the original floating-point range.
+
 $\text{min}_{\text{int}}$: Minimum value in the target integer range (e.g., $-128$ for 8-bit signed integers).
+
 
 $Z = \text{round}\left( \frac{0 - (-2.0)}{\Delta} \right) - 128 = \text{round}\left( \frac{2.0}{0.0157} \right) - 128 \approx \text{round}(127.3885) - 128 \approx 127 - 128 = -1$
 
