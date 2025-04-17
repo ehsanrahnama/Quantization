@@ -58,6 +58,8 @@ $\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max
 
 $\Delta = \frac{\text{max}_{\{\text{float}\}} - \text{min}_{\{\text{float}\}}}{\text{max}_{\{\text{int}\}} - \text{min}_{\{\text{int}\}}} = \frac{\text{Input Range}}{\text{Quantized Range}}$
 
+Delta = (max_float - min_float) / (max_int - min_int) = Input Range / Quantized Range
+
 $\Delta = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
 
 The zero-point is calculated as:
