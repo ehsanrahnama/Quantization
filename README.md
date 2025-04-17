@@ -54,11 +54,7 @@ We want to quantize to 8-bit integers (range: $[-128, 127]$).
 
 Scale factor (step size), calculated as:
 
-$\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}}$
-
-$\Delta = \frac{\text{max}_{\{\text{float}\}} - \text{min}_{\{\text{float}\}}}{\text{max}_{\{\text{int}\}} - \text{min}_{\{\text{int}\}}} = \frac{\text{Input Range}}{\text{Quantized Range}}$
-
-Delta = (max_float - min_float) / (max_int - min_int) = Input Range / Quantized Range
+$\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}} = \frac{\text{Input Range}}{\text{Quantized Range}}$
 
 $\Delta = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
 
@@ -81,7 +77,8 @@ $Z = \text{round}\left( \frac{0 - (-2.0)}{\Delta} \right) - 128 = \text{round}\l
 Let's quantize $x = 1.3$:
 
 **Scale & Round:**
-$\text{Quantized Int} = \text{round}\left(\frac{1.3}{\Delta}\right) + Z = \text{round}\left(\frac{1.3}{0.0157}\right) - 1 \approx 83 - 1 = 82$
+
+$\text{quantized to int} = \text{round}\left(\frac{1.3}{\Delta}\right) + Z = \text{round}\left(\frac{1.3}{0.0157}\right) - 1 \approx 83 - 1 = 82$
 
 Store as 8-bit integer: $82$ (instead of the float $1.3$).
 
