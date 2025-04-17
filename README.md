@@ -25,8 +25,8 @@ the intermediate activations produced during inference. Post-training quantizati
 
 | Technique | Time                                      | Accuracy                                                   |
 | :-------- | :---------------------------------------- | :--------------------------------------------------------- |
-| QAT       | More time-consuming (requires fine-tuning) | Generally higher accuracy, especially at low bitwidths      |
 | PTQ       | Faster (post-training, minimal calibration) | Potentially lower accuracy compared to QAT                 |
+| QAT       | More time-consuming (requires fine-tuning) | Generally higher accuracy, especially at low bitwidths      |
 
 
 ## Mathematics Representation
