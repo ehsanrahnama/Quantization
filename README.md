@@ -20,7 +20,7 @@ Weight quantization involves decreasing the precision of a model's weights by co
 the intermediate activations produced during inference. Post-training quantization (PTQ) refers to quantizing both weights and activations after the model has been trained, without the need for retraining. In contrast, quantization-aware training (QAT) incorporates quantization into the training process itself, allowing the model to adapt to quantized representations as it learns. 
 
 
-Note: QAT is generally more time-consuming than PTQ and typically leads to higher accuracy compared to PTQ, especially at lower bitwidths (e.g., INT4 or INT8).
+*Note: QAT is generally more time-consuming than PTQ and typically leads to higher accuracy compared to PTQ, especially at lower bitwidths (e.g., INT4 or INT8).*
 
 
 | Technique | Time                                      | Accuracy                                                   |
