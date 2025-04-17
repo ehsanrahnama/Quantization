@@ -107,56 +107,82 @@ Both [TensorFlow](https://www.tensorflow.org/model_optimization/guide/quantizati
 Here is some snippet python code for quantize yolov5
 
 ```python
-    import tensorflow_model_optimization as tfmot
-    ...
- 
-	## load Fuctional Model
-	func_model,  anchor, grid, stride = craete_funtional_model(keras_model, batch_size=batch_size)
-	func_model.summary()
-	func_model.load_weights("weights/checkpoint/last")
-	func_model.trainable = True
-	for layer in func_model.layers:  
-		layer.trainable = True
+import tensorflow_model_optimization as tfmot
+...
 
-	# Quantization Model 
-	qm = tfmot.quantization.keras.quantize_model(func_model)
-	qm.summary()
-    ...
+## load Fuctional Model
+func_model,  anchor, grid, stride = craete_funtional_model(keras_model, batch_size=batch_size)
+func_model.summary()
+func_model.load_weights("weights/checkpoint/last")
+func_model.trainable = True
+for layer in func_model.layers:  
+layer.trainable = True
 
-    for epoch in range(start_epoch, epochs+1):
-        mloss = tf.zeros(3)  # mean losses
+# Quantization Model 
+qm = tfmot.quantization.keras.quantize_model(func_model)
+qm.summary()
+...
 
-        start_time = time.time() 
-        for step, (imgs, targets, paths, shapes) in enumerate(train_loader): 
-            step_time = time.time()
-            imgs_tf = torch_to_tf(imgs)
+for epoch in range(start_epoch, epochs+1):
+mloss = tf.zeros(3)  # mean losses
 
-            with tf.GradientTape(watch_accessed_variables=False, persistent=False) as tape:
-                
-                tape.watch(qm.trainable_variables)
-                p = qm(imgs_tf, training=True)
-                preds = convert_prediction(p)
-                total_loss, loss_items = compute_loss(targets, preds)
+start_time = time.time() 
+for step, (imgs, targets, paths, shapes) in enumerate(train_loader): 
+    step_time = time.time()
+    imgs_tf = torch_to_tf(imgs)
 
-            grads = tape.gradient(total_loss, qm.trainable_variables)
-            ## preprocess before assigned grads 
-            optimizer.apply_gradients(zip(grads, qm.trainable_variables),experimental_aggregate_gradients=False)
+    with tf.GradientTape(watch_accessed_variables=False, persistent=False) as tape:
+        
+        tape.watch(qm.trainable_variables)
+        p = qm(imgs_tf, training=True)
+        preds = convert_prediction(p)
+        total_loss, loss_items = compute_loss(targets, preds)
 
-            lr =lr_fn(step)
-            optimizer.lr.assign(lr)
-            mloss = (mloss * step + loss_items) / (step + 1)  # update mean losses
-            mloss_ = mloss.numpy()										
+    grads = tape.gradient(total_loss, qm.trainable_variables)
+    ## preprocess before assigned grads 
+    optimizer.apply_gradients(
+        zip(grads, qm.trainable_variables),
+        experimental_aggregate_gradients=False,
+        )
 
-        print('=> Epoch {}, Step {}, Total Loss {:.5f}, -- lbox {:.4f}  lobj {:.4f}  lcls {:.4f} --   LR {:.5f} duration {:.3f} s'.format(
-							epoch, step, float(total_loss), float(mloss[0]), float(mloss[1]), float(mloss[2]),
-																								float(lr) ,time.time()-step_time))
-		end_t = time.time() - start_time
-		print(f"\nEpoch Ended {epoch} -Duration {str(timedelta(seconds=end_t))} -Loss {float(total_loss)}")
+    lr =lr_fn(step)
+    optimizer.lr.assign(lr)
+    mloss = (mloss * step + loss_items) / (step + 1)  # update mean losses
+    mloss_ = mloss.numpy()										
+    print(
+        "=> Epoch {}, Step {}, Total Loss {:.5f}, -- lbox {:.4f}  lobj {:.4f}  lcls {:.4f} -- LR {:.5f} duration {:.3f} s".format(
+                epoch,
+                step,
+                float(total_loss),
+                float(mloss[0]),
+                float(mloss[1]),
+                float(mloss[2]),
+                float(lr),
+                time.time() - step_time,
+            )
+        )
 
-		if total_loss < 1.15 or epoch % 5:
-			save_model(qm, "./weights/quant/best_saved_model")
-			qm.save_weights(f"./weights/quant/checkpoint/q_{str(epoch)}")
+if total_loss < 1.15 or epoch % 5:
+    save_model(qm, "./weights/quant/best_saved_model")
+    qm.save_weights(f"./weights/quant/checkpoint/q_{str(epoch)}")
 ```
+
+
+The diagram below compares the precision of the original model (FP32) with the precision of the model that has undergone quantization-aware training.
+
+
+![alt text](plot.png)
+
+
+In this diagram, the orange line represents the quantized model (int8), and the blue line represents the original model (FP32). As you can see, after a certain point, the precision of the quantized model becomes very close to, and even the same as, the original model's precision. This demonstrates that quantization-aware training (QAT) is effective in keeping the model's accuracy high while reducing memory usage and speeding up the time it takes to make predictions (inference time). Models trained this way are particularly well-suited for devices with limited resources, such as the Nvidia Jetson, or for running on CPUs like those from Qualcomm. 
+
+
+
+## Find more 
+
+https://medium.com/@joel_34050/quantization-in-deep-learning-478417eab72b
+https://huggingface.co/docs/optimum/en/concept_guides/quantization#references\
+https://www.geeksforgeeks.org/quantization-in-deep-learning/
 
 
 
