@@ -16,8 +16,6 @@ There are several types of quantization that can be applied in deep learning. 1 
 - **Post-Training Quantization (PTQ):** Applied after model training.
 - **Quantization-Aware Training (QAT):** Simulates quantization during training for better accuracy.
 
-Weight quantization focuses on reducing the precision of model weights to lower-bit integers, like 8-bit, while activation quantization does the same for the intermediate activations generated during inference. Post-training quantization (PTQ) is a method where both weights and activations are quantized after model training, without retraining, while quantization-aware training (QAT) integrates quantization during the training process. 
-
 Weight quantization involves decreasing the precision of a model's weights by converting them to lower-bit integers, such as 8-bit values. Similarly, activation quantization reduces the precision of
 the intermediate activations produced during inference. Post-training quantization (PTQ) refers to quantizing both weights and activations after the model has been trained, without the need for retraining. In contrast, quantization-aware training (QAT) incorporates quantization into the training process itself, allowing the model to adapt to quantized representations as it learns. 
 
