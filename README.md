@@ -104,7 +104,7 @@ Both [TensorFlow](https://www.tensorflow.org/model_optimization/guide/quantizati
 
 
 
-Here is some snippet python code for quantize yolov5
+Here is a Python code snippet for quantizing YOLOv5.
 
 ```python
 import tensorflow_model_optimization as tfmot
