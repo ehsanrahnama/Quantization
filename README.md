@@ -31,7 +31,7 @@ the intermediate activations produced during inference. Post-training quantizati
 
 ## Mathematics Representation
 
-**What is the mathematical formual for quantization?**\
+**What is the mathematical formula for quantization?**\
 Quantization fundamentally involves mapping a continuous variable (e.g., a continuous signal) to a discrete set of values.
 
 ### Formula:
@@ -56,7 +56,7 @@ Scale factor (step size), calculated as:
 
 $\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}} = \frac{\text{Input Range}}{\text{Quantized Range}}$
 
-$\Delta = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
+$\Delta = \frac{\text{max}_{\text{float}} - \text{min}_{\text{float}}}{\text{max}_{\text{int}} - \text{min}_{\text{int}}} = \frac{\text{Input Range}}{\text{Quantized Range}} = \frac{2.0 - (-2.0)}{127 - (-128)} = \frac{4.0}{255} \approx 0.0157$
 
 The zero-point is calculated as:
 
